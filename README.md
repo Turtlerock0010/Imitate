@@ -8,7 +8,7 @@ Welcome to Imitate! An autonomous path recorder and generator that can record an
 Imitate is a program designed for miniFRC that can record keypresses and releases and replay keypresses. The program can also convert recordings into arduino to be used directly by the robot which supports keys with custom functionality tied to them.
 
 ### How was Imitate created?
-Imitate initially started out as a recommendation from a team member in team 83 to make a program that can record and play back inputs. I then created the concept then expanded it to a full application, eventually becoming a full application.
+Imitate initially started out as a recommendation from a team member in team 83 to make a program that can record and play back inputs. I then created the concept then expanded it to a full application, eventually becoming a full application. I drew GUI inspiration from Natro Macro, a macro for Bee Swarm Simulator.
 
 ### What drive trains does Imitate allow conversion to?
 Imitate has a limited amount of drive trains that are supported, with further plans to expand to more drive trains in the future. Currently, there are 3 drive trains supported:
