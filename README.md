@@ -15,8 +15,6 @@ Imitate has a limited amount of drive trains that are supported, with further pl
 - Tank
 - Mecanum
 - Fortnite
-  
-## Setup
 
 ## User Manual
 <img width="592" alt="Image of Imitate as of July 1, 2025" src="https://github.com/user-attachments/assets/c562bdf4-baf5-4dcd-b3f6-7f3ed642a999" />
