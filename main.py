@@ -498,8 +498,8 @@ def createFunction():
                     resultFunction += "\n   // Turn Left"
                     resultFunction += "\n   frontLeftMotor.set(-1)"
                     resultFunction += "\n   frontRightMotor.set(1)"
-                    resultFunction += "\n   backLeftMotor.set(1)"
-                    resultFunction += "\n   backRightMotor.set(-1)"
+                    resultFunction += "\n   backLeftMotor.set(-1)"
+                    resultFunction += "\n   backRightMotor.set(1)"
 
                     #Checks if a delay can be put
                     if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
@@ -511,8 +511,8 @@ def createFunction():
                     resultFunction += "\n   // Turn Right"
                     resultFunction += "\n   frontLeftMotor.set(1)"
                     resultFunction += "\n   frontRightMotor.set(-1)"
-                    resultFunction += "\n   backLeftMotor.set(-1)"
-                    resultFunction += "\n   backRightMotor.set1)"
+                    resultFunction += "\n   backLeftMotor.set(1)"
+                    resultFunction += "\n   backRightMotor.set(-1)"
 
                     # Checks if a delay can be put
                     if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
@@ -614,7 +614,7 @@ def createFunction():
                 resultFunction += "\n"
                 resultFunction += "\n   // Chat we gotta beat the storm frfrfrfrfrfr"
                 resultFunction += "\n   for (int i = 0; i > 1000000; i++) {"
-                resultFunction += "\n       Serial.Print('Dusty Divots');"
+                resultFunction += "\n       Serial.Print('Lebron the GOAT');"
                 resultFunction += "\n   }"
                 resultFunction += "\n   frontLeftMotor.set(0)"
                 resultFunction += "\n   frontRightMotor.set(0)"
