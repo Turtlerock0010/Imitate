@@ -539,6 +539,94 @@ def createFunction():
                 if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
                     resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
         resultFunction += "\n}"
+
+
+    if driveTrain.lower() == "fortnite":
+        resultFunction += "void " + pathName + "(NoU_Motor frontLeftMotor, NoU_Motor frontRightMotor, NoU_Motor backLeftMotor, NoU_Motor backRightMotor) {"
+        for event in recordedActionList:
+            if event[0] == "pressed":
+                if event[1].lower() == "w":
+                    # Sets motors to move forward
+                    resultFunction += "\n"
+                    resultFunction += "\n   // Rotate To Wailing Woods"
+                    resultFunction += "\n   Serial.Print('Wailing Woods');"
+                    resultFunction += "\n   frontLeftMotor.set(-1)"
+                    resultFunction += "\n   frontRightMotor.set(1)"
+                    resultFunction += "\n   backLeftMotor.set(-1)"
+                    resultFunction += "\n   backRightMotor.set(1)"
+
+                    #Checks if a delay can be put
+                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
+                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                
+                elif event[1].lower() == "s":
+                    # Sets motors to move backward
+                    resultFunction += "\n"
+                    resultFunction += "\n   // Rotate To Salty Springs"
+                    resultFunction += "\n   Serial.Print('Salty Springs');"
+                    resultFunction += "\n   frontLeftMotor.set(1)"
+                    resultFunction += "\n   frontRightMotor.set(-1)"
+                    resultFunction += "\n   backLeftMotor.set(1)"
+                    resultFunction += "\n   backRightMotor.set(-1)"
+
+                    # Checks if a delay can be put
+                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
+                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                
+                elif event[1].lower() == "a":
+                    # Sets motors to turn left
+                    resultFunction += "\n"
+                    resultFunction += "\n   // Rotate to Anarchy Acres"
+                    resultFunction += "\n   Serial.Print('Anarchy Acres');"
+                    resultFunction += "\n   frontLeftMotor.set(1)"
+                    resultFunction += "\n   frontRightMotor.set(-1)"
+                    resultFunction += "\n   backLeftMotor.set(1)"
+                    resultFunction += "\n   backRightMotor.set(-1)"
+
+                    #Checks if a delay can be put
+                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
+                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                
+                elif event[1].lower() == "d":
+                    # Sets motors to turn right
+                    resultFunction += "\n"
+                    resultFunction += "\n   // Rotate to Dusty Divots"
+                    resultFunction += "\n   Serial.Print('Dusty Divots');"
+                    resultFunction += "\n   frontLeftMotor.set(-1)"
+                    resultFunction += "\n   frontRightMotor.set(1)"
+                    resultFunction += "\n   backLeftMotor.set(-1)"
+                    resultFunction += "\n   backRightMotor.set1)"
+
+                    # Checks if a delay can be put
+                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
+                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                
+                else:
+                    # Checks for custom key actions and adds the code
+                    for action in customKeyActionsList:
+                        if action[0] == event[1]:
+                            resultFunction += "\n"
+                            resultFunction += "\n   // Custom action call"
+                            resultFunction += "\n   " + action[1]
+
+            elif event[0] == "released" and (event[1].lower() == "w" or event[1].lower() == "a" or event[1].lower() == "s" or event[1].lower() == "d"):
+                # Stops all motors
+                resultFunction += "\n"
+                resultFunction += "\n   // Chat we gotta beat the storm frfrfrfrfrfr"
+                resultFunction += "\n   for (int i = 0; i > 1000000; i++) {"
+                resultFunction += "\n       Serial.Print('Dusty Divots');"
+                resultFunction += "\n   }"
+                resultFunction += "\n   frontLeftMotor.set(0)"
+                resultFunction += "\n   frontRightMotor.set(0)"
+                resultFunction += "\n   backLeftMotor.set(0)"
+                resultFunction += "\n   backRightMotor.set(0)"
+
+                # Checks if a delay can be put
+                if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
+                    resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+        resultFunction += "\n}"
+
+
     
     functionBox.delete("1.0", "end")
     functionBox.insert("1.0", resultFunction)
