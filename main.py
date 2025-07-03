@@ -1,6 +1,6 @@
 #-----------------------Library Init-----------------------
 import pyautogui as auto
-from pynput import keyboard
+from pynput import keyboard, mouse
 import time
 import tkinter as tk
 from tkinter import ttk, PhotoImage, filedialog, messagebox
@@ -19,6 +19,9 @@ recording = False
 recordedActionList = []
 customKeyActionsList = []
 validDriveTrains = ["Tank", "Mecanum", "Fortnite"]
+lastClick = []
+recordedClick = []
+recordingMouseClick = False
 
 #-----------------------Functions-----------------------
 def on_press(key):
@@ -51,6 +54,20 @@ def on_release(key):
     if key == keyboard.Key.esc:
         print("Keyboard listener stopped.")
         return False
+    
+def on_click(x, y, button, pressed):
+    if pressed:
+        lastClick = [(x, y), str(button)]
+
+        global recordingMouseClick
+        if lastClick != [] and "Button.left" == lastClick[1] and recordingMouseClick:
+            global recordedClick
+
+            recordingMouseClick = False 
+            recordedClick.clear()
+            recordedClick = lastClick.copy()
+            mouseFocusOutput.insert(0, recordedClick)
+        print(lastClick)
 
 def record():
     global recordedActionList
@@ -79,6 +96,9 @@ def playRecording():
         playButton.config(text=i)
         time.sleep(1)
     
+    if recordedClick != []:
+        auto.click(x=recordedClick[0][0], y=recordedClick[0][1])
+
     # Replays the recorded actions
     for event in recordedActionList:
         if recordedActionList.index(event) != len(recordedActionList)-1:
@@ -686,11 +706,16 @@ def removeKeyStroke():
     else:
         messagebox.showinfo("Warning", "Error: Undefined Exception. \n Report this error to the developer.")
 
+def startRecordingMouse():
+    global recordingMouseClick
+    recordingMouseClick = True
 
 #-----------------------Main Loop-----------------------
 # Create a keyboard listener and main loop
 listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+mouseListener = mouse.Listener(on_click=on_click)
 listener.start()
+mouseListener.start()
 print("Recording key presses. Press 'Esc' to stop.")
 
 # Window Setup
@@ -771,7 +796,13 @@ replayButton.grid(row=7, column=0)
 replayInput = tk.Entry(root, width=8)
 replayInput.grid(row=7, column=1)
 
+mouseFocusLabel = tk.Label(root, text="Mouse Refocus")
+mouseFocusLabel.grid(row=8,column=0, columnspan=2)
 
+mouseFocusSetButton = tk.Button(root, text="Set", command=lambda: startRecordingMouse())
+mouseFocusSetButton.grid(row=9, column=0)
+mouseFocusOutput = tk.Entry(root, width=8)
+mouseFocusOutput.grid(row=9, column=1)
 #--Row 2--
 
 # Name Input GUI
@@ -847,6 +878,8 @@ saveCustomInput.grid(row=5, column=7)
 root.mainloop()
 listener.stop()
 listener.join() # Wait for the listener to stop
+mouseListener.stop()
+mouseListener.join() # Wait for the listener to stop
 
 # You can now process or save the recorded_keys list
 print("\n--- Recorded Key Events ---")
