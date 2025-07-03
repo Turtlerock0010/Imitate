@@ -41,6 +41,7 @@ def on_press(key):
         actionList.append(('pressed', key_char, time.time()))
         print(f"Key pressed: {key_char}")
 
+
 def on_release(key):
     try:
         key_char = key.char
@@ -54,7 +55,8 @@ def on_release(key):
     if key == keyboard.Key.esc:
         print("Keyboard listener stopped.")
         return False
-    
+
+ 
 def on_click(x, y, button, pressed):
     if pressed:
         lastClick = [(x, y), str(button)]
@@ -68,6 +70,7 @@ def on_click(x, y, button, pressed):
             recordedClick = lastClick.copy()
             mouseFocusOutput.insert(0, recordedClick)
         print(lastClick)
+
 
 def record():
     global recordedActionList
@@ -85,10 +88,12 @@ def record():
         actionList.clear()
         recordingButton.config(text="Stop")
 
+
 def copyActions():
     # Copies the given recorded action list to the Clipboard
     root.clipboard_clear()
     root.clipboard_append(str(recordedActionList))
+
 
 def playRecording():
     # Delay for user which in the future will be adjustable
@@ -111,6 +116,7 @@ def playRecording():
             if event[0] == "released":
                 auto.keyUp(str(event[1]))
     playButton.config(text="Play")
+
 
 def threadManager(thread):
     if thread == "replayRecording":
@@ -136,6 +142,7 @@ def threadManager(thread):
         playRecordingThread.daemon = True
         playRecordingThread.start()
 
+
 def savePath(data):
     file_types = [('Text files', '*.txt'), ('All files', '*.*')]
     file = filedialog.asksaveasfile(mode='w', filetypes=file_types, defaultextension=".txt", initialfile="myPath")
@@ -143,6 +150,7 @@ def savePath(data):
         content_to_save = str(data)
         file.write(content_to_save)
         file.close()
+
 
 def loadPath():
     global recordedActionList
@@ -165,6 +173,7 @@ def loadPath():
                     messagebox.showinfo("Warning", "Error: Cannot read path. \n Please ensure the file is valid.")
         except Exception as e:
             print(f"Error loading file: {e}")
+
 
 def getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis):
     angleRadians = math.atan2(horizontalAxis, verticalAxis)
@@ -196,6 +205,7 @@ def getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis):
 
     return fl_throttle, fr_throttle, bl_throttle, br_throttle
 
+
 def updateMecanumMotors(throttles, stateChange, movement):
     global resultFunction
 
@@ -207,11 +217,13 @@ def updateMecanumMotors(throttles, stateChange, movement):
     resultFunction += "\n   backLeftMotor.set(" + str(throttles[2]) + ");"
     resultFunction += "\n   backRightMotor.set(" + str(throttles[3]) + ");"
 
+
 def addDelay(event):
     global resultFunction
     
     if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
         resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+
 
 def createFunction():
     userInput = functionNameBox.get()
@@ -555,10 +567,12 @@ def createFunction():
     functionBox.delete("1.0", "end")
     functionBox.insert("1.0", resultFunction)
 
+
 def copyFunction():
     copiedFunction = functionBox.get("1.0", "end")
     root.clipboard_clear()
     root.clipboard_append(str(copiedFunction))
+
 
 def addKeyStroke():
     customKey = customKeyInput.get()
@@ -586,6 +600,7 @@ def addKeyStroke():
     else:
         messagebox.showinfo("Warning", "Error: Undefined Exception. \n Report this error to the developer.")
 
+
 def removeKeyStroke():
     keySelected = removeActionSelect.get()
     customKeyList = []
@@ -610,9 +625,13 @@ def removeKeyStroke():
     else:
         messagebox.showinfo("Warning", "Error: Undefined Exception. \n Report this error to the developer.")
 
+
 def startRecordingMouse():
     global recordingMouseClick
     recordingMouseClick = True
+
+
+
 
 #-----------------------Main Loop-----------------------
 # Create a keyboard listener and main loop
@@ -635,8 +654,7 @@ render = ImageTk.PhotoImage(load)
 root.iconphoto(False, render)
 
 
-#--Top Information--
-
+#---Top Information---
 # Actions Label
 recordLabel =  tk.Label(root, text="Actions")
 recordLabel.grid(row=0,column=0, columnspan=2)
@@ -662,13 +680,10 @@ seperator1.grid(row=0, column=2, rowspan=11, sticky="ns", padx=5)
 
 seperator2 = ttk.Separator(root, orient='vertical')
 seperator2.grid(row=0, column=5, rowspan=11, sticky="ns", padx=5)
-
-#seperator3 = ttk.Separator(root, orient='vertical')
-#seperator3.grid(row=0, column=8, rowspan=8, sticky="ns", padx=5)
+#---End of Top Information---
 
 
-#--Row 1--
-
+#---Row 1---
 # Recording GUI
 recordingLabel = tk.Label(root, text="Record")
 recordingLabel.grid(row=2,column=0)
@@ -707,8 +722,10 @@ mouseFocusSetButton = tk.Button(root, text="Set", command=lambda: startRecording
 mouseFocusSetButton.grid(row=9, column=0)
 mouseFocusOutput = tk.Entry(root, width=8)
 mouseFocusOutput.grid(row=9, column=1)
-#--Row 2--
+#---End of Row 1---
 
+
+#---Row 2---
 # Name Input GUI
 functionNameLabel = tk.Label(root, text="Name:")
 functionNameLabel.grid(row=2,column=3)
@@ -754,10 +771,10 @@ functionBox.grid(row=9, column=4)
 # Deadspace
 ifYouFoundThisThenDMTheWordCrebToNotanexpertcoderOnDiscord = tk.Label(root, text=" ")
 ifYouFoundThisThenDMTheWordCrebToNotanexpertcoderOnDiscord.grid(row=10,column=3, columnspan=2)
+#---End of Row 2---
 
 
-#--Row 3--
-
+#---Row 3---
 # Save & Load label
 saveAndLoadLabel =  tk.Label(root, text="Save & Load")
 saveAndLoadLabel.grid(row=2,column=6, columnspan=2)
@@ -777,6 +794,8 @@ saveCustomButton = tk.Button(root, text="Save", command=lambda: savePath(saveCus
 saveCustomButton.grid(row=5, column=6)
 saveCustomInput = tk.Entry(root, width=8)
 saveCustomInput.grid(row=5, column=7)
+#---End of Row 1---
+
 
 # Finishing stuff
 root.mainloop()
