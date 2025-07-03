@@ -3,6 +3,9 @@ Welcome to Imitate! An autonomous path recorder and generator that can record an
 
 ![Imitate Logo](https://github.com/user-attachments/assets/72ef18ec-636d-4391-9960-bcfc6c282b52)
 
+## WARNING (*Read Me First*)
+Imitate **ACTIVELY** records keyboard and mouse inputs while open to function due to limitations in how I can incorperate libraries together. Although, Imitate **DOES NOT** save said keyboard or mouse inputs to **ANY** external storage. Everything Imitate saves is saved locally on your device and I am committed to keeping Imitate to not have any form of data collection to keep information safe and private.
+
 ## About
 ### What is Imitate?
 Imitate is a program designed for miniFRC that can record keypresses and releases and replay keypresses. The program can also convert recordings into arduino to be used directly by the robot which supports keys with custom functionality tied to them.
@@ -36,6 +39,9 @@ Once a recording is in memory, the recording is then presented on the entry box 
 #### Replay Recording
 Using the entry box next to the `Replay` button, you can input a recording compatibile to Imitate and plays the recording and saves the recording to memory.
 
+#### Mouse Refocus
+Press the `Set` button next to the entry box to set the location where your mouse will click to refocus to a different application. The location of the next click after clicking the `Set` button will be the location saved where the location will appear on the entry box where the mouse location will then be used for refocusing when `play` is pressed.
+
 ### Function Section
 
 #### Function Name Input
@@ -59,7 +65,7 @@ When a function has been created, pressing the `Copy` button will copy the funct
 ### Data Section
 
 #### Save Recording
-Press the `Save` button to prompt a save dialog to save the path in memory to a .txt file.
+Press the `Save` button to prompt a save dialog to save the path in memory to a .txt file. NOTE: **Imitate will only save the path, not the application refocus mouse location**
 
 #### Load Recording
 Press the `Load` button to prompt a load dialog to load in a .txt file into memory. NOTE: *Imitate will reject invalid files.*
