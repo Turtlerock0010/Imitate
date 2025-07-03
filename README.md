@@ -20,7 +20,7 @@ Imitate has a limited amount of drive trains that are supported, with further pl
 - Fortnite
 
 ## User Manual
-<img width="592" alt="Image of Imitate as of July 1, 2025" src="https://github.com/user-attachments/assets/c562bdf4-baf5-4dcd-b3f6-7f3ed642a999" />
+<img width="592" alt="Imitate as of July 2, 2025." src="https://github.com/user-attachments/assets/2367f862-465a-4d40-b856-8eb96bb76d40" />
 
 ### Action Section
 
