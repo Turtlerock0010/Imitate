@@ -196,9 +196,27 @@ def getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis):
 
     return fl_throttle, fr_throttle, bl_throttle, br_throttle
 
+def updateMecanumMotors(throttles, stateChange, movement):
+    global resultFunction
+
+    # Updates motors
+    resultFunction += "\n"
+    resultFunction += "\n   // Update throttles to " + stateChange + " " + movement
+    resultFunction += "\n   frontLeftMotor.set(" + str(throttles[0]) + ");"
+    resultFunction += "\n   frontRightMotor.set(" + str(throttles[1]) + ");"
+    resultFunction += "\n   backLeftMotor.set(" + str(throttles[2]) + ");"
+    resultFunction += "\n   backRightMotor.set(" + str(throttles[3]) + ");"
+
+def addDelay(event):
+    global resultFunction
+    
+    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
+        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+
 def createFunction():
     userInput = functionNameBox.get()
     driveTrain = driveTrainInput.get()
+    global resultFunction
     resultFunction = ""
 
     # Get Path Name
@@ -223,126 +241,72 @@ def createFunction():
 
     # Loop for every event happened
     if driveTrain.lower() == "mecanum":
-        horizontalAxis = 0
-        verticalAxis = 0
-        rotationalAxis = 0
+        hAxis = 0
+        vAxis = 0
+        rAxis = 0
 
         resultFunction += "void " + pathName + "(NoU_Motor frontLeftMotor, NoU_Motor frontRightMotor, NoU_Motor backLeftMotor, NoU_Motor backRightMotor) {"
         for event in recordedActionList:
             if event[0] == "pressed":
                 if event[1].lower() == "w":
-                    if verticalAxis == 0:
-                        verticalAxis = 1
-                    elif verticalAxis == -1:
-                        verticalAxis = 0
+                    vAxis += 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to include moving forward"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "include", "moving forward")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "s":
-                    if verticalAxis == 0:
-                        verticalAxis = -1
-                    elif verticalAxis == 1:
-                        verticalAxis = 0
-                
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to include moving backward"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    vAxis -= 1
+
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "include", "moving backward")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
 
                 elif event[1].lower() == "a":
-                    if horizontalAxis == 0:
-                        horizontalAxis = -1
-                    elif horizontalAxis == 1:
-                        horizontalAxis = 0
+                    hAxis -= 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to include moving left"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "include", "moving left")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "d":
-                    if horizontalAxis == 0:
-                        horizontalAxis = 1
-                    elif horizontalAxis == -1:
-                        horizontalAxis = 0
+                    hAxis += 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to include moving right"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "include", "moving right")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
 
                 elif event[1].lower() == "j":
-                    if rotationalAxis == 1:
-                        rotationalAxis = 0
-                    elif rotationalAxis == 0:
-                        rotationalAxis = -1
+                    rAxis -= 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to include turning left"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "include", "turning left")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "l":
-                    if rotationalAxis == -1:
-                        rotationalAxis = 0
-                    elif rotationalAxis == 0:
-                        rotationalAxis = 1
+                    rAxis += 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to include turning right"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "include", "turning right")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 else:
                     # Checks for custom key actions and adds the code
@@ -354,119 +318,64 @@ def createFunction():
 
             elif event[0] == "released":
                 if event[1].lower() == "w":
-                    if verticalAxis == 1:
-                        verticalAxis = 0
-                    elif verticalAxis == 0:
-                        verticalAxis = -1
+                    vAxis -= 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to remove moving forward"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "remove", "moving forward")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "s":
-                    if verticalAxis == -1:
-                        verticalAxis = 0
-                    elif verticalAxis == 0:
-                        verticalAxis = 1
-                
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to remove moving backward"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    vAxis += 1
+
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "remove", "moving backward")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
 
                 elif event[1].lower() == "a":
-                    if horizontalAxis == -1:
-                        horizontalAxis = 0
-                    elif horizontalAxis == 0:
-                        horizontalAxis = 1
-                    print(horizontalAxis)
+                    hAxis += 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to remove moving left"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "remove", "moving left")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "d":
-                    if horizontalAxis == 1:
-                        horizontalAxis = 0
-                    elif horizontalAxis == 0:
-                        horizontalAxis = -1
+                    hAxis -= 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to remove moving right"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "remove", "moving right")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
 
                 elif event[1].lower() == "j":
-                    if rotationalAxis == 0:
-                        rotationalAxis = 1
-                    elif rotationalAxis == -1:
-                        rotationalAxis = 0
+                    rAxis += 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to remove turning left"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "remove", "turning left")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "l":
-                    if rotationalAxis == 0:
-                        rotationalAxis = -1
-                    elif rotationalAxis == 1:
-                        rotationalAxis = 0
+                    rAxis -= 1
 
-                    throttleList = getMecanumThrottles(horizontalAxis, verticalAxis, rotationalAxis)
-                    # Updates motors
-                    resultFunction += "\n"
-                    resultFunction += "\n   // Update throttles to remove turning right"
-                    resultFunction += "\n   frontLeftMotor.set(" + str(throttleList[0]) + ");"
-                    resultFunction += "\n   frontRightMotor.set(" + str(throttleList[1]) + ");"
-                    resultFunction += "\n   backLeftMotor.set(" + str(throttleList[2]) + ");"
-                    resultFunction += "\n   backRightMotor.set(" + str(throttleList[3]) + ");"
+                    # Calculates throttles and updates motors
+                    throttleList = getMecanumThrottles(hAxis, vAxis, rAxis)
+                    updateMecanumMotors(throttleList, "remove", "turning right")
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 else:
                     # Checks for custom key actions and adds the code
@@ -477,8 +386,7 @@ def createFunction():
                             resultFunction += "\n   " + action[1]
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
         resultFunction += "\n}"
 
 
@@ -496,8 +404,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set(1);"
 
                     #Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "s":
                     # Sets motors to move backward
@@ -509,8 +416,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set(-1);"
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "a":
                     # Sets motors to turn left
@@ -522,8 +428,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set(1);"
 
                     #Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "d":
                     # Sets motors to turn right
@@ -535,8 +440,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set(-1);"
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 else:
                     # Checks for custom key actions and adds the code
@@ -545,6 +449,9 @@ def createFunction():
                             resultFunction += "\n"
                             resultFunction += "\n   // Custom action call"
                             resultFunction += "\n   " + action[1]
+                    
+                    # Checks if a delay can be put
+                    addDelay(event)
 
             elif event[0] == "released" and (event[1].lower() == "w" or event[1].lower() == "a" or event[1].lower() == "s" or event[1].lower() == "d"):
                 # Stops all motors
@@ -556,8 +463,7 @@ def createFunction():
                 resultFunction += "\n   backRightMotor.set(0);"
 
                 # Checks if a delay can be put
-                if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                    resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                addDelay(event)
         resultFunction += "\n}"
 
 
@@ -576,8 +482,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set(1);"
 
                     #Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "s":
                     # Sets motors to move backward
@@ -590,8 +495,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set(-1);"
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "a":
                     # Sets motors to turn left
@@ -604,8 +508,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set(-1);"
 
                     #Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 elif event[1].lower() == "d":
                     # Sets motors to turn right
@@ -618,8 +521,7 @@ def createFunction():
                     resultFunction += "\n   backRightMotor.set1);"
 
                     # Checks if a delay can be put
-                    if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                        resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                    addDelay(event)
                 
                 else:
                     # Checks for custom key actions and adds the code
@@ -628,6 +530,9 @@ def createFunction():
                             resultFunction += "\n"
                             resultFunction += "\n   // Custom action call"
                             resultFunction += "\n   " + action[1]
+
+                    # Checks if a delay can be put
+                    addDelay(event)
 
             elif event[0] == "released" and (event[1].lower() == "w" or event[1].lower() == "a" or event[1].lower() == "s" or event[1].lower() == "d"):
                 # Stops all motors
@@ -642,8 +547,7 @@ def createFunction():
                 resultFunction += "\n   backRightMotor.set(0);"
 
                 # Checks if a delay can be put
-                if recordedActionList.index(event) != len(recordedActionList) - 1 and len(recordedActionList) > 1:
-                    resultFunction += "\n   delay(" + str(round((recordedActionList[recordedActionList.index(event)+1][2] - event[2]) * 1000)) + ");"
+                addDelay(event)
         resultFunction += "\n}"
 
 
