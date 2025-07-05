@@ -26,10 +26,15 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
 
-      - name: Build executable
+      - name: Build executable (Windows)
+        if: matrix.os == 'windows-latest'
         run: |
-          pyinstaller --onefile main.py
-        # 'main.py' is your entry point Python script
+          pyinstaller --onefile --add-data "Imitate Logo.png;." main.py
+
+      - name: Build executable (macOS/Linux)
+        if: matrix.os != 'windows-latest'
+        run: |
+          pyinstaller --onefile --add-data "Imitate Logo.png:." main.py
 
       - name: Rename executable (Windows)
         if: matrix.os == 'windows-latest'
@@ -46,16 +51,62 @@ jobs:
         run: |
           mv dist/main dist/Imitate
 
+      # Zip the executable (Windows)
+      - name: Zip Windows executable
+        if: matrix.os == 'windows-latest'
+        run: |
+          Compress-Archive -Path dist/Imitate.exe -DestinationPath dist/Imitate-windows.zip
+
+      # Zip the executable (macOS)
+      - name: Zip macOS executable
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd dist && zip Imitate-macos.zip Imitate
+
+      # Zip the executable (Linux)
+      - name: Zip Linux executable
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd dist && zip Imitate-linux.zip Imitate
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.os }}
           path: |
-            dist/Imitate*
+            dist/Imitate-*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-ubuntu-latest
+          path: artifacts/linux
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-macos-latest
+          path: artifacts/macos
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-windows-latest
+          path: artifacts/windows
+
+      - name: List release files
+        run: ls -lR artifacts
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/Imitate*
+          files: |
+            artifacts/linux/Imitate-linux.zip
+            artifacts/macos/Imitate-macos.zip
+            artifacts/windows/Imitate-windows.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
