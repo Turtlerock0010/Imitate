@@ -8,6 +8,8 @@ from PIL import Image, ImageTk
 import threading
 import ast
 import math
+import os
+import sys
 
 #-----------------------Program Init-----------------------
 # List to store recorded key events
@@ -70,6 +72,14 @@ def on_click(x, y, button, pressed):
             recordedClick = lastClick.copy()
             mouseFocusOutput.insert(0, recordedClick)
         print(lastClick)
+
+
+def resourcePath(relativePath):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    if hasattr(sys, '_MEIPASS'):
+        # PyInstaller stores temp unpacked files here
+        return os.path.join(sys._MEIPASS, relativePath)
+    return os.path.join(os.path.abspath("."), relativePath)
 
 
 def record():
@@ -648,7 +658,7 @@ root.geometry("480x270")
 root.resizable(False, False)
 
 # Icon Setup
-image_path = "Imitate Logo.png"
+image_path = resourcePath("Imitate Logo.png")
 load = Image.open(image_path)
 render = ImageTk.PhotoImage(load)
 root.iconphoto(False, render)
