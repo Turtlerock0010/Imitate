@@ -22,11 +22,9 @@ Imitate has a limited amount of drive trains that are supported, with further pl
 ## Setup
 1. Download your OS specific version of Imitate from releases in the GitHub
 2. Allow Imitate through your OS security
-3. Create a folder and put Imitate into said folder
-4. Download the image `Imitate Logo.png` from the GitHub and put it in the folder you created
-5. Enjoy making autos!
+3. Enjoy making autos!
 
-NOTE: *Windows is the only verified OS to which Imitate Distributable is shown to work and the `Imitate Logo.png` must be kept the same name*
+NOTE: *Imitate is unable to be tested on linux by Turtlerock0010, and is unverified if the files work*
 
 ## User Manual
 <img width="592" alt="Imitate as of July 2, 2025." src="https://github.com/user-attachments/assets/2367f862-465a-4d40-b856-8eb96bb76d40" />
