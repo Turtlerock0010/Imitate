@@ -106,11 +106,6 @@ def copyActions():
 
 
 def playRecording():
-    # Delay for user which in the future will be adjustable
-    for i in reversed(range(1,6)):
-        playButton.config(text=i)
-        time.sleep(1)
-    
     if recordedClick != []:
         auto.click(x=recordedClick[0][0], y=recordedClick[0][1])
 
