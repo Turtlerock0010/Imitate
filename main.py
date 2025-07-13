@@ -24,6 +24,7 @@ validDriveTrains = ["Tank", "Mecanum", "Fortnite"]
 lastClick = []
 recordedClick = []
 recordingMouseClick = False
+bypassNoMouseRefocus = False
 
 #-----------------------Functions-----------------------
 def on_press(key):
@@ -70,6 +71,7 @@ def on_click(x, y, button, pressed):
             recordingMouseClick = False 
             recordedClick.clear()
             recordedClick = lastClick.copy()
+            mouseFocusOutput.delete(0, tk.END)
             mouseFocusOutput.insert(0, recordedClick)
         print(lastClick)
 
@@ -90,6 +92,7 @@ def record():
     if recording:
         recording = False
         recordedActionList = actionList.copy()
+        actionsBox.delete(0, tk.END)
         actionsBox.insert(0, str(recordedActionList))
         print(recordedActionList)
         recordingButton.config(text="Start")
@@ -106,10 +109,17 @@ def copyActions():
 
 
 def playRecording():
+    global bypassNoMouseRefocus 
+
     if recordedClick != []:
         auto.click(x=recordedClick[0][0], y=recordedClick[0][1])
+    elif bypassNoMouseRefocus == False:
+        messagebox.showinfo("Warning", "Recording will play without a mouse refocus. \n Create a mouse refocus or press play again to replay recording.")
+        bypassNoMouseRefocus = True
+        return
 
     # Replays the recorded actions
+    playButton.config(text="Playing")
     for event in recordedActionList:
         if recordedActionList.index(event) != len(recordedActionList)-1:
             if event[0] == "pressed":
@@ -149,12 +159,14 @@ def threadManager(thread):
 
 
 def savePath(data):
+    saveCustomInput.delete(0, tk.END)
     file_types = [('Text files', '*.txt'), ('All files', '*.*')]
     file = filedialog.asksaveasfile(mode='w', filetypes=file_types, defaultextension=".txt", initialfile="myPath")
     if file: # Check if the user didn't cancel the dialog
         content_to_save = str(data)
         file.write(content_to_save)
         file.close()
+        messagebox.showinfo("File Saved", "The path has been saved.")
 
 
 def loadPath():
