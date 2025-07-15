@@ -168,7 +168,6 @@ def savePath(data):
         file.close()
         messagebox.showinfo("File Saved", "The path has been saved.")
 
-
 def loadPath():
     global recordedActionList
 
@@ -661,7 +660,6 @@ print("Recording key presses. Press 'Esc' to stop.")
 # Window Setup
 root = tk.Tk()
 root.title("Imitate")
-root.geometry("480x270")
 root.resizable(False, False)
 
 # Icon Setup
