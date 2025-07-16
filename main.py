@@ -10,6 +10,7 @@ import ast
 import math
 import os
 import sys
+import customtkinter as ctk
 
 #-----------------------Program Init-----------------------
 # List to store recorded key events
@@ -71,7 +72,7 @@ def on_click(x, y, button, pressed):
             recordingMouseClick = False 
             recordedClick.clear()
             recordedClick = lastClick.copy()
-            mouseFocusOutput.delete(0, tk.END)
+            mouseFocusOutput.delete(0, ctk.END)
             mouseFocusOutput.insert(0, recordedClick)
         print(lastClick)
 
@@ -92,14 +93,14 @@ def record():
     if recording:
         recording = False
         recordedActionList = actionList.copy()
-        actionsBox.delete(0, tk.END)
+        actionsBox.delete(0, ctk.END)
         actionsBox.insert(0, str(recordedActionList))
         print(recordedActionList)
-        recordingButton.config(text="Start")
+        recordingButton.configure(text="Start")
     else:
         recording = True
         actionList.clear()
-        recordingButton.config(text="Stop")
+        recordingButton.configure(text="Stop")
 
 
 def copyActions():
@@ -119,7 +120,7 @@ def playRecording():
         return
 
     # Replays the recorded actions
-    playButton.config(text="Playing")
+    playButton.configure(text="Playing")
     for event in recordedActionList:
         if recordedActionList.index(event) != len(recordedActionList)-1:
             if event[0] == "pressed":
@@ -130,7 +131,7 @@ def playRecording():
         else:
             if event[0] == "released":
                 auto.keyUp(str(event[1]))
-    playButton.config(text="Play")
+    playButton.configure(text="Play")
 
 
 def threadManager(thread):
@@ -159,7 +160,7 @@ def threadManager(thread):
 
 
 def savePath(data):
-    saveCustomInput.delete(0, tk.END)
+    saveCustomInput.delete(0, ctk.END)
     file_types = [('Text files', '*.txt'), ('All files', '*.*')]
     file = filedialog.asksaveasfile(mode='w', filetypes=file_types, defaultextension=".txt", initialfile="myPath")
     if file: # Check if the user didn't cancel the dialog
@@ -600,10 +601,10 @@ def addKeyStroke():
         # Update remove key list
         customKeyList = []
         removeActionSelect.set("") # Also clear the displayed text
-        removeActionSelect['values'] = () # Set the options to an empty tuple/list
+        removeActionSelect.configure(values=()) # Set the options to an empty tuple/list
         for key in customKeyActionsList:
             customKeyList.append(key[0])
-        removeActionSelect['values'] = tuple(customKeyList)
+        removeActionSelect.configure(values=tuple(customKeyList))
 
     elif customKey == "":
         messagebox.showinfo("Warning", "Error: Key empty. \n Please put the desired key in.")
@@ -632,7 +633,7 @@ def removeKeyStroke():
         removeActionSelect['values'] = () # Set the options to an empty tuple/list
         for key in customKeyActionsList:
             customKeyList.append(key[0])
-        removeActionSelect['values'] = tuple(customKeyList)
+        removeActionSelect.configure(values=tuple(customKeyList))
     
     elif keySelected == "":
         messagebox.showinfo("Warning", "Error: No key Selected. \n Please put in a key.")
@@ -646,7 +647,8 @@ def startRecordingMouse():
     global recordingMouseClick
     recordingMouseClick = True
 
-
+def changeTheme(color):
+    ctk.set_appearance_mode(color)
 
 
 #-----------------------Main Loop-----------------------
@@ -658,8 +660,9 @@ mouseListener.start()
 print("Recording key presses. Press 'Esc' to stop.")
 
 # Window Setup
-root = tk.Tk()
+root = ctk.CTk()
 root.title("Imitate")
+root.geometry("480x270")
 root.resizable(False, False)
 
 # Icon Setup
@@ -668,148 +671,164 @@ load = Image.open(image_path)
 render = ImageTk.PhotoImage(load)
 root.iconphoto(False, render)
 
+# Appearances
+ctk.set_appearance_mode("light")
+
+buttonColor = "#2e6eeb"
+buttonHoverColor = "#275BBF"
+entryBorderColor = "#4B7EC8"
 
 #---Top Information---
 # Actions Label
-recordLabel =  tk.Label(root, text="Actions")
+recordLabel = ctk.CTkLabel(root, text="Actions")
 recordLabel.grid(row=0,column=0, columnspan=2)
 
 # Functions Label
-codeLabel =  tk.Label(root, text="Functions")
+codeLabel =  ctk.CTkLabel(root, text="Functions")
 codeLabel.grid(row=0,column=3, columnspan=2)
 
 # Data Label
-codeLabel =  tk.Label(root, text="Data")
+codeLabel =  ctk.CTkLabel(root, text="Data")
 codeLabel.grid(row=0,column=6, columnspan=2)
 
 # More label
-moreLabel =  tk.Label(root, text=" ")
+moreLabel =  ctk.CTkLabel(root, text=" ")
 moreLabel.grid(row=0,column=9)
 
 # Seperators
-topLabelSeperator = ttk.Separator(root, orient="horizontal")
+topLabelSeperator = ctk.CTkFrame(master=root, height=1, corner_radius=0)
 topLabelSeperator.grid(row=1, column=0, columnspan=12, sticky='ew', pady=5)
 
-seperator1 = ttk.Separator(root, orient='vertical')
+seperator1 = ctk.CTkFrame(master=root, width=0, corner_radius=0)
 seperator1.grid(row=0, column=2, rowspan=11, sticky="ns", padx=5)
 
-seperator2 = ttk.Separator(root, orient='vertical')
+seperator2 = ctk.CTkFrame(master=root, width=0, corner_radius=0)
 seperator2.grid(row=0, column=5, rowspan=11, sticky="ns", padx=5)
 #---End of Top Information---
 
 
 #---Row 1---
 # Recording GUI
-recordingLabel = tk.Label(root, text="Record")
+recordingLabel = ctk.CTkLabel(root, text="Record")
 recordingLabel.grid(row=2,column=0)
-recordingButton= tk.Button(root, text="Start", command=record)
+recordingButton= ctk.CTkButton(root, text="Start", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=record)
 recordingButton.grid(row=2, column=1)
 
 # Play GUI
-playLabel = tk.Label(root, text="Play")
+playLabel = ctk.CTkLabel(root, text="Play")
 playLabel.grid(row=3,column=0)
-playButton = tk.Button(root, text="Play", command=lambda: threadManager("playRecording"))
+playButton = ctk.CTkButton(root, text="Play", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=lambda: threadManager("playRecording"))
 playButton.grid(row=3, column=1)
 
 
 # Copy Actions
-codeLabel =  tk.Label(root, text="Copy Actions")
+codeLabel =  ctk.CTkLabel(root, text="Copy Actions")
 codeLabel.grid(row=4,column=0, columnspan=2)
 
-copyActionsButton = tk.Button(root, text="Copy", command=copyActions)
-copyActionsButton.grid(row=5, column=0)
-actionsBox = tk.Entry(root, width=8)
+copyActionsButton = ctk.CTkButton(root, text="Copy", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=copyActions)
+copyActionsButton.grid(row=5, column=0, padx = 5)
+actionsBox = ctk.CTkEntry(root, width=80, height=10, border_color=entryBorderColor)
 actionsBox.grid(row=5, column=1)
 
 # Replay GUI
-replayLabel =  tk.Label(root, text="Replay Actions")
+replayLabel =  ctk.CTkLabel(root, text="Replay Actions")
 replayLabel.grid(row=6,column=0, columnspan=2)
 
-replayButton = tk.Button(root, text="Play", command=lambda: threadManager("replayRecording"))
-replayButton.grid(row=7, column=0)
-replayInput = tk.Entry(root, width=8)
+replayButton = ctk.CTkButton(root, text="Play", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=lambda: threadManager("replayRecording"))
+replayButton.grid(row=7, column=0, padx = 5)
+replayInput = ctk.CTkEntry(root, width=80, height=10, border_color=entryBorderColor)
 replayInput.grid(row=7, column=1)
 
-mouseFocusLabel = tk.Label(root, text="Mouse Refocus")
+mouseFocusLabel = ctk.CTkLabel(root, text="Mouse Refocus")
 mouseFocusLabel.grid(row=8,column=0, columnspan=2)
 
-mouseFocusSetButton = tk.Button(root, text="Set", command=lambda: startRecordingMouse())
-mouseFocusSetButton.grid(row=9, column=0)
-mouseFocusOutput = tk.Entry(root, width=8)
+mouseFocusSetButton = ctk.CTkButton(root, text="Set", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=lambda: startRecordingMouse())
+mouseFocusSetButton.grid(row=9, column=0, padx = 5)
+mouseFocusOutput = ctk.CTkEntry(root, width=80, height=10, border_color=entryBorderColor)
 mouseFocusOutput.grid(row=9, column=1)
 #---End of Row 1---
 
 
 #---Row 2---
 # Name Input GUI
-functionNameLabel = tk.Label(root, text="Name:")
+functionNameLabel = ctk.CTkLabel(root, text="Name:")
 functionNameLabel.grid(row=2,column=3)
-functionNameBox = tk.Entry(root, width=8)
+functionNameBox = ctk.CTkEntry(root, width=80, height=10, border_color=entryBorderColor)
 functionNameBox.grid(row=2, column=4)
 
 # Custom actions label
-customActionsLabel = tk.Label(root, text="Custom Actions")
+customActionsLabel = ctk.CTkLabel(root, text="Custom Actions")
 customActionsLabel.grid(row=3,column=3, columnspan=2)
 
 # Custom key GUI
-addActionButton = tk.Button(root, text="Add:", width=1, command=addKeyStroke)
+addActionButton = ctk.CTkButton(root, text="Add", width=20, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=addKeyStroke)
 addActionButton.grid(row=4, column=3, sticky="w")
-customKeyInput = tk.Entry(root, width=2)
+customKeyInput = ctk.CTkEntry(root, width=30, height=10, border_color=entryBorderColor)
 customKeyInput.grid(row=4, column=3, sticky="e")
-customActionInput = tk.Entry(root, width=7)
-customActionInput.grid(row=4, column=4)
+customActionInput = ctk.CTkEntry(root, width=80, height=10, border_color=entryBorderColor)
+customActionInput.grid(row=4, column=4, padx=5)
 
-removeActionButton = tk.Button(root, text="Remove:", width=4, command= removeKeyStroke)
+removeActionButton = ctk.CTkButton(root, text="Remove", width=70, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command= removeKeyStroke)
 removeActionButton.grid(row=5, column=3)
-removeActionSelect = ttk.Combobox(root, width=6)
+removeActionSelect = ctk.CTkComboBox(root, width=80, height=10, border_color=entryBorderColor, button_color=entryBorderColor, values=(" "))
 removeActionSelect.grid(row=5, column=4)
 
 # Drivetrain input GUI
-driveTrainLabel = tk.Label(root, text="Drvtrain:")
+driveTrainLabel = ctk.CTkLabel(root, text="Drvtrain:")
 driveTrainLabel.grid(row=6,column=3)
-driveTrainInput = ttk.Combobox(root, width=6, values=validDriveTrains)
+driveTrainInput = ctk.CTkComboBox(root, width=80, height=10, border_color=entryBorderColor, button_color=entryBorderColor, values=validDriveTrains)
 driveTrainInput.grid(row=6, column=4)
 
 # Create Function GUI
-createFunctionButton = tk.Button(root, text="Create Function",command=lambda: threadManager("createFunction"))
+createFunctionButton = ctk.CTkButton(root, text="Create Function", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor,command=lambda: threadManager("createFunction"))
 createFunctionButton.grid(row=7, column=3, columnspan=2)
 
-functionSeperator = ttk.Separator(root, orient="horizontal")
+functionSeperator = ctk.CTkFrame(master=root, height=1, width=1, corner_radius=0)
 functionSeperator.grid(row=8, column=3, columnspan=2, sticky="ew", pady=10)
 
 # Copy Function GUI
-copyFunctionButton = tk.Button(root, text="Copy", command = copyFunction)
+copyFunctionButton = ctk.CTkButton(root, text="Copy", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command = copyFunction)
 copyFunctionButton.grid(row=9, column=3)
-functionBox = tk.Text(root, width=8, height=2)
+functionBox = ctk.CTkTextbox(root, width=80, height=2, border_width=2, border_color=entryBorderColor)
 functionBox.grid(row=9, column=4)
 
 # Deadspace
-ifYouFoundThisThenDMTheWordCrebToNotanexpertcoderOnDiscord = tk.Label(root, text=" ")
+ifYouFoundThisThenDMTheWordCrebToNotanexpertcoderOnDiscord = ctk.CTkLabel(root, text=" ")
 ifYouFoundThisThenDMTheWordCrebToNotanexpertcoderOnDiscord.grid(row=10,column=3, columnspan=2)
 #---End of Row 2---
 
 
 #---Row 3---
 # Save & Load label
-saveAndLoadLabel =  tk.Label(root, text="Save & Load")
+saveAndLoadLabel =  ctk.CTkLabel(root, text="Save & Load")
 saveAndLoadLabel.grid(row=2,column=6, columnspan=2)
 
 # Save and Load buttons
-saveButton = tk.Button(root, text="Save", command=lambda: savePath(recordedActionList))
+saveButton = ctk.CTkButton(root, text="Save", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=lambda: savePath(recordedActionList))
 saveButton.grid(row=3, column=6)
-loadButton = tk.Button(root, text="Load", command=loadPath)
+loadButton = ctk.CTkButton(root, text="Load", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=loadPath)
 loadButton.grid(row=3, column=7)
 
 # Save Custom label
-saveCustomLabel =  tk.Label(root, text="Save Custom")
+saveCustomLabel =  ctk.CTkLabel(root, text="Save Custom")
 saveCustomLabel.grid(row=4,column=6, columnspan=2)
 
 # Save Custom GUI
-saveCustomButton = tk.Button(root, text="Save", command=lambda: savePath(saveCustomInput.get()))
+saveCustomButton = ctk.CTkButton(root, text="Save", width=60, height=10, fg_color=buttonColor, hover_color=buttonHoverColor, command=lambda: savePath(saveCustomInput.get()))
 saveCustomButton.grid(row=5, column=6)
-saveCustomInput = tk.Entry(root, width=8)
-saveCustomInput.grid(row=5, column=7)
-#---End of Row 1---
+saveCustomInput = ctk.CTkEntry(root, width=80, height=10, border_color=entryBorderColor)
+saveCustomInput.grid(row=5, column=7, padx=5)
+
+# Seperator
+functionSeperator = ctk.CTkFrame(master=root, height=1, width=1, corner_radius=0)
+functionSeperator.grid(row=6, column=6, columnspan=2, sticky="ew", pady=10)
+
+# Settings Label
+settingsLabel =  ctk.CTkLabel(root, text="Settings")
+settingsLabel.grid(row=7,column=6, columnspan=2)
+themeSelect = ctk.CTkComboBox(root, width=60, height=10, border_color=entryBorderColor, button_color=entryBorderColor, command=changeTheme, values=("Light", "Dark"))
+themeSelect.grid(row=8, column=6)
+#---End of Row 3---
 
 
 # Finishing stuff
