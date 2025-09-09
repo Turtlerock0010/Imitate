@@ -666,7 +666,7 @@ root.geometry("480x270")
 root.resizable(False, False)
 
 # Icon Setup
-image_path = resourcePath(os.path.join("data_files", "Imitate Logo.png"))
+image_path = resourcePath(os.path.join("assets", "Imitate Logo.png"))
 load = Image.open(image_path)
 render = ImageTk.PhotoImage(load)
 root.iconphoto(False, render)
