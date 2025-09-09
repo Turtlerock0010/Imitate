@@ -672,7 +672,7 @@ def loadState():
                 # Put Back States
                 if state[0] == "mode": # light or dark mode states
                     ctk.set_appearance_mode(state[1])
-                    
+
         else:
             pass
 
