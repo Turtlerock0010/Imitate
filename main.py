@@ -26,6 +26,7 @@ lastClick = []
 recordedClick = []
 recordingMouseClick = False
 bypassNoMouseRefocus = False
+stateList = []
 
 #-----------------------Functions-----------------------
 def on_press(key):
@@ -647,8 +648,37 @@ def startRecordingMouse():
     global recordingMouseClick
     recordingMouseClick = True
 
+
 def changeTheme(color):
     ctk.set_appearance_mode(color)
+    stateList.append(("mode", color))
+
+
+def saveState():  
+    # Open State File and Write
+    with open("assets/state.txt", "w") as file:
+        file.write(str(stateList))
+
+
+def loadState():
+    global stateList
+
+    with open("assets/state.txt", "r") as file:
+        fileContents = file.read()
+        if fileContents != "":
+            stateList = ast.literal_eval(fileContents)
+
+            for state in stateList:
+                # Put Back States
+                if state[0] == "mode": # light or dark mode states
+                    changeTheme(state[1])
+        else:
+            pass
+
+
+def on_closing():
+    saveState()
+    root.destroy()
 
 
 #-----------------------Main Loop-----------------------
@@ -664,6 +694,9 @@ root = ctk.CTk()
 root.title("Imitate")
 root.geometry("480x270")
 root.resizable(False, False)
+
+# Closing Setup
+#root.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Icon Setup
 image_path = resourcePath(os.path.join("assets", "Imitate Logo.png"))
