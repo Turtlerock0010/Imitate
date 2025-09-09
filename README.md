@@ -1,7 +1,7 @@
 # Imitate
 Welcome to Imitate! An autonomous path recorder and generator that can record and playback keystrokes and convert them into a ready to use auto!
 
-![Imitate Logo](https://github.com/user-attachments/assets/72ef18ec-636d-4391-9960-bcfc6c282b52)
+<img width="1920" height="1080" alt="Imitate Banner" src="https://github.com/user-attachments/assets/5c86d4f8-beb9-40a4-b2bf-75b1d766bff6" />
 
 ## WARNING (*Read Me First*)
 Imitate **ACTIVELY** records keyboard and mouse inputs while open to function due to limitations in how I can incorperate libraries together. Although, Imitate **DOES NOT** save said keyboard or mouse inputs to **ANY** external storage. Everything Imitate saves is saved locally on your device and I am committed to keeping Imitate to not have any form of data collection to keep information safe and private.
@@ -27,7 +27,7 @@ Imitate has a limited amount of drive trains that are supported, with further pl
 NOTE: *Imitate is unable to be tested on linux by Turtlerock0010, and is unverified if the files work*
 
 ## User Manual
-<img width="592" alt="Imitate as of July 2, 2025." src="https://github.com/user-attachments/assets/2367f862-465a-4d40-b856-8eb96bb76d40" />
+<img width="592" height="410" alt="Imitate as of July 15th, 2025" src="https://github.com/user-attachments/assets/7d69391a-d652-420a-9238-3450eb47928e" />
 
 ### Action Section
 
@@ -79,3 +79,6 @@ Press the `Load` button to prompt a load dialog to load in a .txt file into memo
 
 #### Save Custom Recording
 Pressing the `Save` button next to the entry box will save the recording to a .txt file.
+
+### Themes
+Select the desired theme `Dropdown` box under settings
