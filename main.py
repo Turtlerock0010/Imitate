@@ -671,7 +671,8 @@ def loadState():
             for state in stateList:
                 # Put Back States
                 if state[0] == "mode": # light or dark mode states
-                    changeTheme(state[1])
+                    ctk.set_appearance_mode(state[1])
+                    
         else:
             pass
 
@@ -696,7 +697,7 @@ root.geometry("480x270")
 root.resizable(False, False)
 
 # Closing Setup
-#root.protocol("WM_DELETE_WINDOW", on_closing)
+root.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Icon Setup
 image_path = resourcePath(os.path.join("assets", "Imitate Logo.png"))
@@ -710,6 +711,8 @@ ctk.set_appearance_mode("light")
 buttonColor = "#2e6eeb"
 buttonHoverColor = "#275BBF"
 entryBorderColor = "#4B7EC8"
+
+loadState()
 
 #---Top Information---
 # Actions Label
