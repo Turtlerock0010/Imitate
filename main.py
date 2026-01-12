@@ -743,7 +743,7 @@ seperator2.grid(row=0, column=5, rowspan=11, sticky="ns", padx=5)
 #---End of Top Information---
 
 
-#---Row 1---
+#---Row 1--
 # Recording GUI
 recordingLabel = ctk.CTkLabel(root, text="Record")
 recordingLabel.grid(row=2,column=0)
@@ -877,4 +877,4 @@ mouseListener.join() # Wait for the listener to stop
 # You can now process or save the recorded_keys list
 print("\n--- Recorded Key Events ---")
 for event in actionList:
-    print(event)
+    print(event) 
