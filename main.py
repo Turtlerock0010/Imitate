@@ -658,14 +658,14 @@ def changeTheme(color):
 
 def saveState():  
     # Open State File and Write
-    with open("assets/state.txt", "w") as file:
+    with open(state_path, "w") as file:
         file.write(str(stateList))
 
 
 def loadState():
     global stateList
 
-    with open("assets/state.txt", "r") as file:
+    with open(state_path, "r") as file:
         fileContents = file.read()
         if fileContents != "":
             stateList = ast.literal_eval(fileContents)
@@ -727,6 +727,10 @@ load = Image.open(image_path)
 render = ImageTk.PhotoImage(load)
 root.iconphoto(False, render)
 
+# State Setup
+state_path = resourcePath(os.path.join("assets", "state.txt"))
+
+# Grid Config
 root.grid_rowconfigure(1, weight=1) # Content expands
 root.grid_columnconfigure(0, weight=1)
 
