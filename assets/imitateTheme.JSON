@@ -124,8 +124,8 @@
     "fg_color": ["white", "#3B3B3B"],
     "border_color": ["light gray", "gray"],
     "text_color": "gray",
-    "scrollbar_button_color": ["#3B3B3B", "#979797"],
-    "scrollbar_button_hover_color": ["#444444", "#A0A0A0"]
+    "scrollbar_button_color": ["#979797", "#2B2B2B"],
+    "scrollbar_button_hover_color": ["#A0A0A0", "#444444"]
   },
   "CTkScrollableFrame": {
     "label_fg_color": ["#3B3B3B", "#EAEAEA"]

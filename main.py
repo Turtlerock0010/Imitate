@@ -824,7 +824,8 @@ operationTerminal.insert("0.0", "> Operation Terminal...")
 copyActionsButton = ctk.CTkButton(frames[menu_options[0]], 
                                         text="Copy Actions", 
                                         height=30, 
-                                        width=100
+                                        width=100,
+                                        command=copyActions
                                         )
 copyActionsButton.grid(row=0, column=1, padx=(0,10), pady=(0,10), sticky="sw")
 
@@ -926,7 +927,8 @@ generateFunctionButton.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="w
 copyFunctionButton = ctk.CTkButton(frames[menu_options[1]],
                                             text="Copy Function",
                                             height=30,
-                                            width=100
+                                            width=100,
+                                            command=copyFunction
                                             )
 copyFunctionButton.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="es")
 #----- End of Functions -----
