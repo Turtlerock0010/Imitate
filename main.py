@@ -680,7 +680,6 @@ def loadState():
 
 
 def on_closing():
-    saveState()
     root.destroy()
 
 def switch_view(value):
@@ -740,8 +739,6 @@ ctk.set_appearance_mode("light")
 buttonColor = "#2e6eeb"
 buttonHoverColor = "#275BBF"
 entryBorderColor = "#4B7EC8"
-
-loadState()
 
 # Overall Layout
 nav_frame = ctk.CTkFrame(root, height=50, corner_radius=0, fg_color="white")
