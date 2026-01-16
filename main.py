@@ -702,9 +702,6 @@ load = Image.open(image_path)
 render = ImageTk.PhotoImage(load)
 root.iconphoto(False, render)
 
-# State Setup
-state_path = resourcePath(os.path.join("assets", "state.txt"))
-
 # Grid Config
 root.grid_rowconfigure(1, weight=1) # Content expands
 root.grid_columnconfigure(0, weight=1)
