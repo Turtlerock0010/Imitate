@@ -1,4 +1,5 @@
 #-----------------------Library Init-----------------------
+from fileinput import filename
 import pyautogui as auto
 from pynput import keyboard, mouse
 import time
@@ -11,6 +12,7 @@ import math
 import os
 import sys
 import customtkinter as ctk
+import json
 
 #-----------------------Program Init-----------------------
 # List to store recorded key events
@@ -657,6 +659,7 @@ def changeTheme(color):
 
 
 def on_closing():
+    saveState()
     root.destroy()
 
 
@@ -683,6 +686,48 @@ def writeToSaveTerminal(text):
 
 def clear_focus(event):
     root.focus()
+
+
+def loadState():
+    # Create Data Dictionary
+    data = {}
+
+    # Load Data from state.json
+    try:
+        with open(stateFile, 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo("Error", "state.json file not found.")
+    except json.JSONDecodeError:
+       messagebox.showinfo("Error", "Unable to parse through state.json.")
+    
+
+    # Load Data into program
+
+    # Set theme
+    ctk.set_appearance_mode(data["Theme"])
+    themeSelect.set(data["Theme"].capitalize())
+
+
+def saveState():
+    # Create Data Dictionary
+    data = {}
+
+    # Load Data from state.json
+    try:
+        with open(stateFile, 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo("Error", "state.json file not found.")
+    except json.JSONDecodeError:
+       messagebox.showinfo("Error", "Unable to parse through state.json.")
+    
+    # Update Data
+    data["Theme"] = ctk.get_appearance_mode()
+
+    # Dump Data
+    with open(stateFile, 'w') as file:
+        json.dump(data, file, indent=4)
 
 
 
@@ -715,10 +760,14 @@ root.iconphoto(False, render)
 root.grid_rowconfigure(1, weight=1) # Content expands
 root.grid_columnconfigure(0, weight=1)
 
+# State Saving
+stateFile = resourcePath(os.path.join("assets", "state.json"))
+
 # Appearances
 imitateThemePath = resourcePath(os.path.join("assets", "imitateTheme.json"))
 ctk.set_default_color_theme(imitateThemePath)
-ctk.set_appearance_mode("light")
+ctk.set_appearance_mode("dark")
+
 
 buttonColor = "#2e6eeb"
 buttonHoverColor = "#275BBF"
@@ -1038,6 +1087,7 @@ for frame in frames.values():
 
 switch_view(menu_options[0])
 
+loadState()
 
 # Finishing stuff
 root.mainloop()
