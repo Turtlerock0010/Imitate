@@ -655,21 +655,26 @@ def changeTheme(color):
     ctk.set_appearance_mode(color)
     stateList.append(("mode", color))
 
+
 def on_closing():
     root.destroy()
+
 
 def switch_view(value):
     # Bring the selected frame to the front
     frame = frames[value]
     frame.tkraise()
 
+
 def writeToOperationTerminal(text):
     operationTerminal.insert("end", "\n" + "> " + text)
     operationTerminal.see("end") # Scroll to the end
 
+
 def writeToFunctionOutput(text):
     functionOutput.insert("end", "\n" + "> " + text)
     functionOutput.see("end") # Scroll to the end
+
 
 def writeToSaveTerminal(text):
     saveTerminal.insert("end", "\n" + "> " + text)
@@ -678,6 +683,10 @@ def writeToSaveTerminal(text):
 
 def clear_focus(event):
     root.focus()
+
+
+
+
 
 #-----------------------Main Loop-----------------------
 # Create a keyboard listener and main loop
@@ -707,6 +716,8 @@ root.grid_rowconfigure(1, weight=1) # Content expands
 root.grid_columnconfigure(0, weight=1)
 
 # Appearances
+imitateThemePath = resourcePath(os.path.join("assets", "imitateTheme.json"))
+ctk.set_default_color_theme(imitateThemePath)
 ctk.set_appearance_mode("light")
 
 buttonColor = "#2e6eeb"
@@ -714,7 +725,7 @@ buttonHoverColor = "#275BBF"
 entryBorderColor = "#4B7EC8"
 
 # Overall Layout
-nav_frame = ctk.CTkFrame(root, height=50, corner_radius=0, fg_color="white")
+nav_frame = ctk.CTkFrame(root, height=50, corner_radius=0)
 nav_frame.grid(row=0, column=0, sticky="ew")
 
 menu_options = ["Actions", "Functions", "Data", "Settings"]
@@ -748,19 +759,14 @@ frames[menu_options[0]] = ctk.CTkFrame(container, fg_color="transparent")
 # -- Action Container --
 actionContainer = ctk.CTkFrame(frames[menu_options[0]], 
                           width=150, 
-                          height=210, 
-                          fg_color="white", 
-                          border_color="light gray", 
+                          height=210,
                           border_width=1
                           )
 actionContainer.grid(row=0, column=0, padx=10, pady=10)
 actionContainer.grid_propagate(False)
 
 recordingButton = ctk.CTkButton(actionContainer, 
-                                    text="Record", 
-                                    fg_color=buttonColor, 
-                                    hover_color=buttonHoverColor, 
-                                    corner_radius=5, 
+                                    text="Record",  
                                     height=30, 
                                     width=130,
                                     command=record
@@ -769,9 +775,6 @@ recordingButton.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 
 playButton = ctk.CTkButton(actionContainer, 
                                 text="Play", 
-                                fg_color=buttonColor, 
-                                hover_color=buttonHoverColor, 
-                                corner_radius=5, 
                                 height=30, 
                                 width=130,
                                 command=lambda: threadManager("playRecording")
@@ -780,16 +783,13 @@ playButton.grid(row=1, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 
 Separator = ctk.CTkFrame(actionContainer, 
                                 height=1, 
-                                fg_color="light gray", 
+                                fg_color="#4B7EC8", 
                                 width=130
                                 )
 Separator.grid(row=2, column=0, padx=10, pady=(10,0), sticky="ew")
 
 mouseFocusButton = ctk.CTkButton(actionContainer, 
                                         text="Set Focus", 
-                                        fg_color=buttonColor, 
-                                        hover_color=buttonHoverColor, 
-                                        corner_radius=5, 
                                         height=30, 
                                         width=130,
                                         command=lambda: startRecordingMouse()
@@ -798,14 +798,13 @@ mouseFocusButton.grid(row=3, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 
 Separator2 = ctk.CTkFrame(actionContainer, 
                                 height=1, 
-                                fg_color="light gray", 
+                                fg_color="#4B7EC8", 
                                 width=130
                                 )
 Separator2.grid(row=4, column=0, padx=10, pady=(10,0), sticky="ew")
 
 replayInput = ctk.CTkEntry(actionContainer, 
                                 placeholder_text="Enter Replay Script", 
-                                border_color=entryBorderColor, 
                                 width=130, 
                                 height=30, 
                                 border_width=2
@@ -815,20 +814,15 @@ replayInput.grid(row=5, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 # -- End of Action Container --
 
 operationTerminal = ctk.CTkTextbox(frames[menu_options[0]], 
-                                        width=300, height=170, 
-                                        fg_color="white", 
-                                        border_color="light gray", 
+                                        width=300, 
+                                        height=170, 
                                         border_width=1, 
-                                        text_color="gray"
                                         )
 operationTerminal.grid(row=0, column=1, padx=(0,10), pady=10, sticky="n")
 operationTerminal.insert("0.0", "> Operation Terminal...")
 
 copyActionsButton = ctk.CTkButton(frames[menu_options[0]], 
                                         text="Copy Actions", 
-                                        fg_color=buttonColor, 
-                                        hover_color=buttonHoverColor, 
-                                        corner_radius=5, 
                                         height=30, 
                                         width=100
                                         )
@@ -836,7 +830,6 @@ copyActionsButton.grid(row=0, column=1, padx=(0,10), pady=(0,10), sticky="sw")
 
 actionsBox = ctk.CTkEntry(frames[menu_options[0]], 
                                         placeholder_text="Copy Actions Here...", 
-                                        border_color=entryBorderColor, 
                                         width=190, 
                                         height=30, 
                                         border_width=2
@@ -851,7 +844,6 @@ frames[menu_options[1]] = ctk.CTkFrame(container, fg_color="transparent")
 
 functionNameInput = ctk.CTkEntry(frames[menu_options[1]],
                                         placeholder_text="Function Name...",
-                                        border_color=entryBorderColor,
                                         width=150,
                                         height=30,
                                         border_width=2
@@ -863,23 +855,19 @@ functionNameInput.grid(column=0, row=0, padx=10, pady=(10,0))
 functionContainer = ctk.CTkFrame(frames[menu_options[1]],
                                 width=150,
                                 height=170,
-                                fg_color="white",
-                                border_color="light gray",
                                 border_width=1
                                 )
 functionContainer.grid(column=0, row=1, padx=10, pady=10)
 functionContainer.grid_propagate(False)
 
 customKeyInput = ctk.CTkEntry(functionContainer, 
-                                border_color=entryBorderColor, 
                                 width=30, 
                                 height=30, 
                                 border_width=2
                                 )
 customKeyInput.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="n")
 
-customActionInput = ctk.CTkEntry(functionContainer, 
-                                border_color=entryBorderColor, 
+customActionInput = ctk.CTkEntry(functionContainer,
                                 width=45, 
                                 height=30, 
                                 border_width=2
@@ -888,9 +876,6 @@ customActionInput.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="e")
 
 addActionButton = ctk.CTkButton(functionContainer,
                                 text="Add",
-                                fg_color=buttonColor,
-                                hover_color=buttonHoverColor,
-                                corner_radius=5,
                                 height=30,
                                 width=45,
                                 command=addKeyStroke
@@ -899,9 +884,6 @@ addActionButton.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="w")
 
 removeActionButton = ctk.CTkButton(functionContainer,
                                 text="Remove",
-                                fg_color=buttonColor,
-                                hover_color=buttonHoverColor,
-                                corner_radius=5,
                                 height=30,
                                 width=45,
                                 command=removeKeyStroke
@@ -912,10 +894,7 @@ removeActionSelect = ctk.CTkComboBox(functionContainer,
                                 values=" ",
                                 width=65,
                                 height=30,
-                                border_color=entryBorderColor,
-                                border_width=2,
-                                button_color=entryBorderColor,
-                                button_hover_color=buttonHoverColor
+                                border_width=2
                                 )
 removeActionSelect.grid(row=1, column=0, padx=(10,10), pady=(10,0), sticky="e")
 
@@ -923,32 +902,21 @@ driveTrainInput = ctk.CTkComboBox(functionContainer,
                                 values=validDriveTrains,
                                 width=130,
                                 height=30,
-                                border_color=entryBorderColor,
-                                border_width=2,
-                                button_color=entryBorderColor,
-                                button_hover_color=buttonHoverColor
+                                border_width=2
                                 )
 driveTrainInput.grid(row=2, column=0, padx=(10,10), pady=(10,0), sticky="ew")
-
 #-----End of Function List -----
-
 
 functionOutput = ctk.CTkTextbox(frames[menu_options[1]],
                                     width=300,
                                     height=170,
-                                    fg_color="white",
-                                    border_color="light gray",
                                     border_width=1,
-                                    text_color="gray"
                                     )
 functionOutput.grid(column=1, row=0, rowspan=2, padx=(0,10), pady=10, sticky="n")
 functionOutput.insert("0.0", "> Function Output...")
 
 generateFunctionButton = ctk.CTkButton(frames[menu_options[1]],
                                             text="Generate Function </>",
-                                            fg_color=buttonColor,
-                                            hover_color=buttonHoverColor,
-                                            corner_radius=5,
                                             height=30,
                                             width=190,
                                             command=lambda: threadManager("createFunction")
@@ -957,14 +925,14 @@ generateFunctionButton.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="w
 
 copyFunctionButton = ctk.CTkButton(frames[menu_options[1]],
                                             text="Copy Function",
-                                            fg_color=buttonColor,
-                                            hover_color=buttonHoverColor,
-                                            corner_radius=5,
                                             height=30,
                                             width=100
                                             )
 copyFunctionButton.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="es")
 #----- End of Functions -----
+
+
+
 
 #----- Data -----
 frames[menu_options[2]] = ctk.CTkFrame(container, fg_color="transparent")
@@ -974,31 +942,21 @@ frames[menu_options[2]] = ctk.CTkFrame(container, fg_color="transparent")
 dataList = ctk.CTkFrame(frames[menu_options[2]],
                                 width=150,
                                 height=210,
-                                fg_color="white",
-                                border_color="light gray",
                                 border_width=1
                                 )
 dataList.grid(column=0, row=1, padx=10, pady=10)
 dataList.grid_propagate(False)
 
-
 saveButton = ctk.CTkButton(dataList,
                                     text="Save",
-                                    fg_color=buttonColor,
-                                    hover_color=buttonHoverColor,
-                                    corner_radius=5,
                                     height=30,
                                     width=130,
                                     command=lambda: savePath(recordedActionList)
                                     )
 saveButton.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 
-
 loadButton = ctk.CTkButton(dataList,
                                     text="Load",
-                                    fg_color=buttonColor,
-                                    hover_color=buttonHoverColor,
-                                    corner_radius=5,
                                     height=30,
                                     width=130,
                                     command=loadPath
@@ -1007,25 +965,16 @@ loadButton.grid(row=1, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 #----- End of Data List -----
 
 
-
-
 saveTerminal = ctk.CTkTextbox(frames[menu_options[2]],
                                     width=300,
                                     height=170,
-                                    fg_color="white",
-                                    border_color="light gray",
-                                    border_width=1,
-                                    text_color="gray"
+                                    border_width=1
                                     )
 saveTerminal.grid(column=1, row=0, rowspan=2, padx=(0,10), pady=10, sticky="n")
 saveTerminal.insert("0.0", "> Data Output...")
 
-
 saveCustomButton = ctk.CTkButton(frames[menu_options[2]],
                                             text="Save Custom Data",
-                                            fg_color=buttonColor,
-                                            hover_color=buttonHoverColor,
-                                            corner_radius=5,
                                             height=30,
                                             width=100,
                                             command=lambda: savePath(saveCustomInput.get())
@@ -1034,7 +983,6 @@ saveCustomButton.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="ws")
 
 saveCustomInput = ctk.CTkEntry(frames[menu_options[2]],
                                 placeholder_text="Custom Input...",
-                                border_color=entryBorderColor,
                                 width=165,
                                 height=30,
                                 border_width=2,
@@ -1042,15 +990,15 @@ saveCustomInput = ctk.CTkEntry(frames[menu_options[2]],
 saveCustomInput.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="es")
 #----- End of Data -----
 
+
+
 #----- Settings -----
 frames[menu_options[3]] = ctk.CTkFrame(container, fg_color="transparent")
 
 # -- Settings Container --
 settingsContainer = ctk.CTkFrame(frames[menu_options[3]], 
                           width=150, 
-                          height=210, 
-                          fg_color="white", 
-                          border_color="light gray", 
+                          height=210,
                           border_width=1
                           )
 settingsContainer.grid(row=0, column=0, padx=10, pady=10)
@@ -1060,10 +1008,7 @@ themeSelect = ctk.CTkComboBox(settingsContainer,
                                 values=("Light", "Dark"),
                                 width=130,
                                 height=30,
-                                border_color=entryBorderColor,
                                 border_width=2,
-                                button_color=entryBorderColor,
-                                button_hover_color=buttonHoverColor,
                                 command=changeTheme
                                 )
 themeSelect.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="ew")
@@ -1073,8 +1018,6 @@ themeSelect.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 creditsBox = ctk.CTkFrame(frames[menu_options[3]],
                                     width=300,
                                     height=210,
-                                    fg_color="white",
-                                    border_color="light gray",
                                     border_width=1,
                                     )
 creditsBox.grid(column=1, row=0, rowspan=2, padx=(0,10), pady=10, sticky="n")
@@ -1086,9 +1029,6 @@ creditsLabel = ctk.CTkLabel(creditsBox,
                                 )
 creditsLabel.grid(column=0, row=0, padx=10, pady=10, sticky="w")
 # -- End of Credits Container --
-
-
-
 #----- End of Settings -----
 
 for frame in frames.values():
@@ -1108,4 +1048,3 @@ mouseListener.join() # Wait for the listener to stop
 print("\n--- Recorded Key Events ---")
 for event in actionList:
     print(event)
-
