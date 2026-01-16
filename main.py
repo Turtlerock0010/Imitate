@@ -655,30 +655,6 @@ def changeTheme(color):
     ctk.set_appearance_mode(color)
     stateList.append(("mode", color))
 
-
-def saveState():  
-    # Open State File and Write
-    with open(state_path, "w") as file:
-        file.write(str(stateList))
-
-
-def loadState():
-    global stateList
-
-    with open(state_path, "r") as file:
-        fileContents = file.read()
-        if fileContents != "":
-            stateList = ast.literal_eval(fileContents)
-
-            for state in stateList:
-                # Put Back States
-                if state[0] == "mode": # light or dark mode states
-                    ctk.set_appearance_mode(state[1])
-
-        else:
-            pass
-
-
 def on_closing():
     root.destroy()
 
