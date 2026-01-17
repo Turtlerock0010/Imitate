@@ -852,13 +852,21 @@ Separator2 = ctk.CTkFrame(actionContainer,
                                 )
 Separator2.grid(row=4, column=0, padx=10, pady=(10,0), sticky="ew")
 
+replayButton = ctk.CTkButton(actionContainer, 
+                                        text="Replay", 
+                                        height=30, 
+                                        width=50,
+                                        command=lambda: threadManager("replayRecording")
+                                        )
+replayButton.grid(row=5, column=0, padx=(10,10), pady=(10,0), sticky="w")
+
 replayInput = ctk.CTkEntry(actionContainer, 
                                 placeholder_text="Enter Replay Script", 
-                                width=130, 
+                                width=70, 
                                 height=30, 
                                 border_width=2
                                 )
-replayInput.grid(row=5, column=0, padx=(10,10), pady=(10,0), sticky="ew")
+replayInput.grid(row=5, column=0, padx=(10,10), pady=(10,0), sticky="e")
 
 # -- End of Action Container --
 
