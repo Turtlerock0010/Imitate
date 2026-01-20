@@ -867,8 +867,8 @@ replayInput = ctk.CTkEntry(actionContainer,
                                 border_width=2
                                 )
 replayInput.grid(row=5, column=0, padx=(10,10), pady=(10,0), sticky="e")
-
 # -- End of Action Container --
+
 
 operationTerminal = ctk.CTkTextbox(frames[menu_options[0]], 
                                         width=300, 
@@ -965,6 +965,7 @@ driveTrainInput = ctk.CTkComboBox(functionContainer,
 driveTrainInput.grid(row=2, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 #-----End of Function List -----
 
+
 functionOutput = ctk.CTkTextbox(frames[menu_options[1]],
                                     width=300,
                                     height=170,
@@ -1054,6 +1055,7 @@ saveCustomInput.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="es")
 #----- Settings -----
 frames[menu_options[3]] = ctk.CTkFrame(container, fg_color="transparent")
 
+
 # -- Settings Container --
 settingsContainer = ctk.CTkFrame(frames[menu_options[3]], 
                           width=150, 
@@ -1072,6 +1074,7 @@ themeSelect = ctk.CTkComboBox(settingsContainer,
                                 )
 themeSelect.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 # -- End of Settings Container --
+
 
 # -- Credits Container --
 creditsBox = ctk.CTkFrame(frames[menu_options[3]],
