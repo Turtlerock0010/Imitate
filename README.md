@@ -71,10 +71,10 @@ Press the `Add` button to add custom functionality to a key when read by giving 
 By selecting a letter from the list in the combo box and pressing the `Remove` button, the letter and its functionality will be removed.
 
 #### Drive Train Input
-To select a drive train, next to the `Drvtrain` label, select a drive train in the combo box. NOTE: *A drive train is required to sucessfully create a function*
+To select a drive train, select a drive train in the combo box. NOTE: *A drive train is required to sucessfully create a function*
 
 #### Create Function
-When the `Create Function </>` button is pressed, Imitate translates the recording in memory into executable code for Arduino. NOTE: *A drive train is required and if the name entry box is left blank the name will default to "myPath"*
+When the `Generate Function </>` button is pressed, Imitate translates the recording in memory into executable code for Arduino. NOTE: *A drive train is required and if the name entry box is left blank the name will default to "myPath"*
 
 #### Copy Function
 When a function has been created, pressing the `Copy Function` button will copy the function inside the text box next to it into your clipboard.
