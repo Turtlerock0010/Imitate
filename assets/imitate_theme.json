@@ -49,10 +49,10 @@
     "border_width": 3,
     "button_length": 0,
     "fg_color": ["#3B3B3B", "#979797"],
-    "progress_color": ["#2FA572", "#106A43"],
+    "progress_color": "#2e6eeb",
     "button_color": ["#DCE4EE", "#FFFFFF"],
     "button_hover_color": ["#EEEEEE", "#DDDDDD"],
-    "text_color": ["#DCE4EE", "#000000"],
+    "text_color": ["#000000", "#DCE4EE"],
     "text_color_disabled": ["#AAB1B8", "#919191"]
   },
   "CTkRadioButton": {

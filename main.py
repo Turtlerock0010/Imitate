@@ -127,6 +127,7 @@ def playRecording():
 
     # Replays the recorded actions
     playButton.configure(text="Playing")
+    root.attributes('-alpha', 0.5)
     for event in recordedActionList:
         if recordedActionList.index(event) != len(recordedActionList)-1:
             if event[0] == "pressed":
@@ -138,6 +139,7 @@ def playRecording():
             if event[0] == "released":
                 auto.keyUp(str(event[1]))
     playButton.configure(text="Play")
+    root.attributes('-alpha', 1)
 
 
 def threadManager(thread):
@@ -193,6 +195,8 @@ def loadPath():
                 # Process the content (e.g., load into a Text widget, parse data)
                 try:
                     recordedActionList = ast.literal_eval(content)
+                    messagebox.showinfo("File Loaded", "The path has been loaded.")
+                    writeToSaveTerminal("Path loaded from: " + file.name)
                 except:
                     messagebox.showinfo("Warning", "Error: Cannot read path. \n Please ensure the file is valid.")
         except Exception as e:
@@ -587,7 +591,7 @@ def createFunction():
         resultFunction += "\n}"
 
 
-    writeToFunctionOutput(resultFunction)
+    writeToFunctionTerminal(resultFunction)
 
 
 def copyFunction():
@@ -674,9 +678,9 @@ def writeToOperationTerminal(text):
     operationTerminal.see("end") # Scroll to the end
 
 
-def writeToFunctionOutput(text):
-    functionOutput.insert("end", "\n" + "> " + text)
-    functionOutput.see("end") # Scroll to the end
+def writeToFunctionTerminal(text):
+    functionTerminal.insert("end", "\n" + "> " + text)
+    functionTerminal.see("end") # Scroll to the end
 
 
 def writeToSaveTerminal(text):
@@ -707,6 +711,8 @@ def loadState():
     # Set theme
     ctk.set_appearance_mode(data["Theme"])
     themeSelect.set(data["Theme"].capitalize())
+    root.attributes('-topmost', data["alwaysOnTop"])
+    alwaysOnTopSwitch.select() if data["alwaysOnTop"] else alwaysOnTopSwitch.deselect()
 
 
 def saveState():
@@ -724,6 +730,7 @@ def saveState():
     
     # Update Data
     data["Theme"] = ctk.get_appearance_mode()
+    data["alwaysOnTop"] = root.attributes('-topmost')
 
     # Dump Data
     with open(stateFile, 'w') as file:
@@ -751,7 +758,7 @@ root.resizable(False, False)
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Icon Setup
-image_path = resourcePath(os.path.join("assets", "Imitate Logo.png"))
+image_path = resourcePath(os.path.join("assets", "imitate_logo.png"))
 load = Image.open(image_path)
 render = ImageTk.PhotoImage(load)
 root.iconphoto(False, render)
@@ -764,7 +771,7 @@ root.grid_columnconfigure(0, weight=1)
 stateFile = resourcePath(os.path.join("assets", "state.json"))
 
 # Appearances
-imitateThemePath = resourcePath(os.path.join("assets", "imitateTheme.json"))
+imitateThemePath = resourcePath(os.path.join("assets", "imitate_theme.json"))
 ctk.set_default_color_theme(imitateThemePath)
 ctk.set_appearance_mode("dark")
 
@@ -966,13 +973,13 @@ driveTrainInput.grid(row=2, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 #-----End of Function List -----
 
 
-functionOutput = ctk.CTkTextbox(frames[menu_options[1]],
+functionTerminal = ctk.CTkTextbox(frames[menu_options[1]],
                                     width=300,
                                     height=170,
                                     border_width=1,
                                     )
-functionOutput.grid(column=1, row=0, rowspan=2, padx=(0,10), pady=10, sticky="n")
-functionOutput.insert("0.0", "> Function Output...")
+functionTerminal.grid(column=1, row=0, rowspan=2, padx=(0,10), pady=10, sticky="n")
+functionTerminal.insert("0.0", "> Function Output...")
 
 generateFunctionButton = ctk.CTkButton(frames[menu_options[1]],
                                             text="Generate Function </>",
@@ -1073,6 +1080,14 @@ themeSelect = ctk.CTkComboBox(settingsContainer,
                                 command=changeTheme
                                 )
 themeSelect.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="ew")
+
+alwaysOnTopSwitch = ctk.CTkSwitch(settingsContainer,
+                                    text="Always on Top",
+                                    width=130,
+                                    height=30,
+                                    command=lambda: root.attributes('-topmost', not root.attributes('-topmost'))
+                                    )
+alwaysOnTopSwitch.grid(row=1, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 # -- End of Settings Container --
 
 
