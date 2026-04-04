@@ -102,11 +102,11 @@ def record():
         actionsBox.delete(0, ctk.END)
         actionsBox.insert(0, str(recordedActionList))
         print(recordedActionList)
-        recordingButton.configure(text="Start")
+        recordingButton.configure(text="Record ⏺")
     else:
         recording = True
         actionList.clear()
-        recordingButton.configure(text="Stop")
+        recordingButton.configure(text="Stop ⏸")
 
 
 def copyActions():
@@ -138,7 +138,7 @@ def playRecording():
         else:
             if event[0] == "released":
                 auto.keyUp(str(event[1]))
-    playButton.configure(text="Play")
+    playButton.configure(text="Play ▶")
     root.attributes('-alpha', 1)
 
 
@@ -775,7 +775,6 @@ imitateThemePath = resourcePath(os.path.join("assets", "imitate_theme.json"))
 ctk.set_default_color_theme(imitateThemePath)
 ctk.set_appearance_mode("dark")
 
-
 buttonColor = "#2e6eeb"
 buttonHoverColor = "#275BBF"
 entryBorderColor = "#4B7EC8"
@@ -822,7 +821,7 @@ actionContainer.grid(row=0, column=0, padx=10, pady=10)
 actionContainer.grid_propagate(False)
 
 recordingButton = ctk.CTkButton(actionContainer, 
-                                    text="Record",  
+                                    text="Record ⏺",  
                                     height=30, 
                                     width=130,
                                     command=record
@@ -830,7 +829,7 @@ recordingButton = ctk.CTkButton(actionContainer,
 recordingButton.grid(row=0, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 
 playButton = ctk.CTkButton(actionContainer, 
-                                text="Play", 
+                                text="Play ▶", 
                                 height=30, 
                                 width=130,
                                 command=lambda: threadManager("playRecording")
@@ -1092,19 +1091,21 @@ alwaysOnTopSwitch.grid(row=1, column=0, padx=(10,10), pady=(10,0), sticky="ew")
 
 
 # -- Credits Container --
-creditsBox = ctk.CTkFrame(frames[menu_options[3]],
-                                    width=300,
-                                    height=210,
+
+creditsBox = ctk.CTkScrollableFrame(frames[menu_options[3]], 
+                                    width=280, 
+                                    height=200,
                                     border_width=1,
                                     )
 creditsBox.grid(column=1, row=0, rowspan=2, padx=(0,10), pady=10, sticky="n")
-creditsBox.grid_propagate(False)
+creditsBox.grid_propagate()
 
 creditsLabel = ctk.CTkLabel(creditsBox,
                                 text="Created by The Pink Fluffy Unicorns [83]\nProject Lead: Turtlerock0010\n\n Special Thanks to:\n- The Pink Fluffy Unicorns [83]\n- Testers\n- Stargazers\n- And Most importantly: \n   You for using this software!\n\n Licensed under GNU GPL v3.0 \n Made with ❤️ by Turtlerock0010",
                                 justify="left",
                                 )
 creditsLabel.grid(column=0, row=0, padx=10, pady=10, sticky="w")
+
 # -- End of Credits Container --
 #----- End of Settings -----
 
