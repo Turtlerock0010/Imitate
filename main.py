@@ -21,6 +21,7 @@ auto.PAUSE = 0
 #-----------------------Variable Init-----------------------
 actionList = []
 recording = False
+playing = False
 recordedActionList = []
 customKeyActionsList = []
 validDriveTrains = ["Tank", "Mecanum", "Fortnite"]
@@ -53,6 +54,8 @@ def on_press(key):
 
 
 def on_release(key):
+    global playing
+
     try:
         key_char = key.char
     except AttributeError:
@@ -64,8 +67,9 @@ def on_release(key):
 
     # Stop listener when 'Esc' is pressed
     if key == keyboard.Key.esc:
-        print("Keyboard listener stopped.")
-        return False
+        playing = False
+        #print("Keyboard listener stopped.")
+        #return False
 
  
 def on_click(x, y, button, pressed):
@@ -117,6 +121,7 @@ def copyActions():
 
 def playRecording():
     global bypassNoMouseRefocus 
+    global playing
 
     if recordedClick != []:
         auto.click(x=recordedClick[0][0], y=recordedClick[0][1])
@@ -128,7 +133,10 @@ def playRecording():
     # Replays the recorded actions
     playButton.configure(text="Playing")
     root.attributes('-alpha', 0.5)
+    playing = True
     for event in recordedActionList:
+        if playing == False:
+            break
         if recordedActionList.index(event) != len(recordedActionList)-1:
             if event[0] == "pressed":
                 auto.keyDown(str(event[1]))
@@ -140,7 +148,7 @@ def playRecording():
                 auto.keyUp(str(event[1]))
     playButton.configure(text="Play ▶")
     root.attributes('-alpha', 1)
-
+    playing = False
 
 def threadManager(thread):
     if thread == "replayRecording":
@@ -655,6 +663,7 @@ def removeKeyStroke():
 def startRecordingMouse():
     global recordingMouseClick
     recordingMouseClick = True
+    writeToOperationTerminal("Click anywhere to record mouse click...")
 
 
 def changeTheme(color):
