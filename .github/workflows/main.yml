@@ -26,30 +26,30 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
 
-      - name: Build executable (Windows)
+      - name: Build directory (Windows)
         if: matrix.os == 'windows-latest'
         run: |
           pyinstaller --onedir --noconsole --add-data "assets;assets" main.py
 
-      - name: Build executable (macOS/Linux)
+      - name: Build directory (macOS/Linux)
         if: matrix.os != 'windows-latest'
         run: |
           pyinstaller --onedir --noconsole --add-data "assets:assets" main.py
 
-      - name: Rename executable (Windows)
+      - name: Rename directory (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          mv dist/main.exe dist/Imitate.exe
+          mv dist/main/.main.exe dist/Imitate.exe
 
-      - name: Rename executable (macOS)
+      - name: Rename directory (macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          mv dist/main dist/Imitate
+          mv dist/main/main dist/Imitate
 
-      - name: Rename executable (Linux)
+      - name: Rename directory (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
-          mv dist/main dist/Imitate
+          mv dist/main/main dist/Imitate
 
       # Zip the executable (Windows)
       - name: Zip Windows executable
