@@ -53,6 +53,7 @@ jobs:
         run: |
           mv dist/main/main dist/Imitate
 
+      # ===== Zipping Directories =====
       # Zip the executable (Windows)
       - name: Zip Windows executable
         if: matrix.os == 'windows-latest'
