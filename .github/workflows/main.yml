@@ -26,6 +26,7 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
 
+      # ===== Building Directories =====
       - name: Build directory (Windows)
         if: matrix.os == 'windows-latest'
         run: |
@@ -36,6 +37,7 @@ jobs:
         run: |
           pyinstaller --onedir --noconsole --add-data "assets:assets" main.py
 
+      # ===== Renaming Directories =====
       - name: Rename directory (Windows)
         if: matrix.os == 'windows-latest'
         run: |
