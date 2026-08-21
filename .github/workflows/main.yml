@@ -39,7 +39,7 @@ jobs:
       - name: Rename directory (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          mv dist/main/.main.exe dist/Imitate.exe
+          mv dist/main/main.exe dist/Imitate.exe
 
       - name: Rename directory (macOS)
         if: matrix.os == 'macos-latest'
